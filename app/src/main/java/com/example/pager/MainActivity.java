@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
         Adaptador adaptor = new Adaptador(fm, getLifecycle());
         pager.setAdapter(adaptor);
 
-        tab.addTab(tab.newTab().setText("Baunilha"));
-        tab.addTab(tab.newTab().setText("Morango"));
-        tab.addTab(tab.newTab().setText("Chocolate"));
+        tab.addTab(tab.newTab().setText("Nome"));
+        tab.addTab(tab.newTab().setText("Turma"));
+        tab.addTab(tab.newTab().setText("Cidade"));
+        tab.addTab(tab.newTab().setText("Time"));
 
         tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
