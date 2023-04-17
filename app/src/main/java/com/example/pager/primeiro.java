@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,13 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class primeiro extends Fragment {
+    Button btnSomar, btnSubtrair, btnLimpar;
+    EditText horaInicial, horaFinal, minutoInical, minutoFinal;
+    TextView resultadoHora, doisPontos, resultadoMinuto;
+    int horaI;
+    int horaF;
+    int minI;
+    int minF;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +70,112 @@ public class primeiro extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_primeiro, container, false);
+        View v = inflater.inflate(R.layout.fragment_primeiro, container, false);
+        horaInicial = v.findViewById(R.id.horaInicial);
+        horaFinal = v.findViewById(R.id.horaFinal);
+        minutoInical = v.findViewById(R.id.minutoInicial);
+        minutoFinal = v.findViewById(R.id.minutoFinal);
+
+        resultadoHora = v.findViewById(R.id.resultadoHora);
+        doisPontos = v.findViewById(R.id.doisPontos);
+        doisPontos.setVisibility(View.INVISIBLE);
+        resultadoMinuto = v.findViewById(R.id.resultadoMinuto);
+
+        btnSomar = v.findViewById(R.id.btnSomar);
+        btnSubtrair = v.findViewById(R.id.btnSubtrair);
+        btnLimpar = v.findViewById(R.id.btnLimpar);
+
+        btnSomar.setOnClickListener(click -> {
+            somar();
+        });
+
+        btnSubtrair.setOnClickListener(click -> {
+            subtrair();
+        });
+
+        btnLimpar.setOnClickListener(click -> {
+            limpar();
+        });
+        return v;
+    }
+
+    public void somar() {
+        cataCampos();
+
+        int rH = horaI + horaF;
+        int rM = minI + minF;
+
+        while (rM > 59) {
+            rM -= 60;
+            rH++;
+        }
+
+        resultadoHora.setText(rH + "");
+        doisPontos.setVisibility(View.VISIBLE);
+        resultadoMinuto.setText(rM + "");
+    }
+
+    public void subtrair() {
+        cataCampos();
+
+        while (minF > 59) {
+            minF -= 60;
+            horaF++;
+        }
+
+        while (minI > 59) {
+            minI -= 60;
+            horaI++;
+        }
+
+        int rH = horaF - horaI;
+        int rM = minF - minI;
+
+        if (horaI > horaF) {
+            rH = horaI - horaF;
+            rM = minI - minF;
+        }
+
+        while (rM < 0) {
+            rM += 60;
+            rH--;
+        }
+
+        while (rM > 59) {
+            rM -= 60;
+            rH++;
+            horaF++;
+        }
+
+        resultadoHora.setText(rH + "");
+        doisPontos.setVisibility(View.VISIBLE);
+        resultadoMinuto.setText(rM + "");
+    }
+
+    public void limpar() {
+        horaInicial.setText(null);
+        horaFinal.setText(null);
+        minutoInical.setText(null);
+        minutoFinal.setText(null);
+
+        resultadoHora.setText(null);
+        doisPontos.setVisibility(View.INVISIBLE);
+        resultadoMinuto.setText(null);
+    }
+
+    public void cataCampos() {
+        try {
+            horaI = Integer.parseInt(horaInicial.getText().toString());
+            horaF = Integer.parseInt(horaFinal.getText().toString());
+            minI = Integer.parseInt(minutoInical.getText().toString());
+            minF = Integer.parseInt(minutoFinal.getText().toString());
+        } catch (Exception e) {
+            horaI = 0;
+            horaF = 0;
+            minI = 0;
+            minF = 0;
+            Toast.makeText(getContext(), "Preencha corretamente todos os campos! (Rendeu um fandangos)", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

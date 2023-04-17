@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +19,13 @@ import android.widget.Button;
  * create an instance of this fragment.
  */
 public class segundo extends Fragment {
+    Random gerador = new Random();
+    Button btnGerar, btnConfirmar;
+    EditText entrada;
+    TextView saida;
+    int numeroGerado = 0;
+    int tentativas = 5;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,6 +69,46 @@ public class segundo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_segundo, container, false);
+        View v = inflater.inflate(R.layout.fragment_segundo, container, false);
+        entrada = v.findViewById(R.id.entrada);
+        saida = v.findViewById(R.id.saida);
+        btnGerar = v.findViewById(R.id.btnGerar);
+        btnGerar = v.findViewById(R.id.btnGerar);
+        btnConfirmar = v.findViewById(R.id.btnConfirmar);
+
+        btnGerar.setOnClickListener(click -> {
+            gerar();
+        });
+
+        btnConfirmar.setOnClickListener(click -> {
+            confirmar();
+        });
+        return v;
+    }
+
+    public void gerar() {
+        saida.setText("");
+        tentativas = 5;
+        numeroGerado = gerador.nextInt(100) + 1;
+    }
+
+    public void confirmar() {
+        int digito = Integer.parseInt(entrada.getText().toString());
+
+        if (tentativas > 0) {
+            if (digito > numeroGerado) {
+                saida.setText("O número gerado é menor. Você possui " + tentativas + " chances.");
+                tentativas--;
+            } else if (digito < numeroGerado) {
+                saida.setText("O número gerado é maior. Você possui " + tentativas + " chances.");
+                tentativas--;
+            } else {
+                saida.setText("Você acertou! O número gerado é " + numeroGerado);
+                tentativas = 0;
+            }
+            entrada.setText("");
+        } else {
+            saida.setText("Suas tentativas acabaram. O número gerado era " + numeroGerado);
+        }
     }
 }

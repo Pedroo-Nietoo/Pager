@@ -21,14 +21,12 @@ public class Adaptador extends FragmentStateAdapter {
                 return new segundo();
             case 2:
                 return new terceiro();
-            case 3:
-                return new quarto();
         }
         return new primeiro();
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
 }
